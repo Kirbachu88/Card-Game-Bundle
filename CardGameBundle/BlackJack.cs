@@ -40,7 +40,7 @@ namespace CardGameBundle
             bool stand = false;
 
             // Deal Starting Cards
-            for (int i = 0; playerCount < MIN_COUNT; i++)
+            for (int i = 0; i < MIN_COUNT; i++)
             {
                 playerHand[playerCount++] = DealCard(newdeck);
                 dealerHand[dealerCount++] = DealCard(newdeck);
@@ -57,10 +57,22 @@ namespace CardGameBundle
             while (stats[0] < 21 && !doubleDown && !stand)
             {
                 // Ask if player wants more cards
+                if (playerAce && playerSecond <= 21) // TODO: Fix playerSecond and/or make the game end immediately when BlackJack is drawn
+                {
+                    playerSecond = playerScore + 11;
+                    Console.WriteLine($"Your cards: {playerScore} / {playerSecond}");
+                    playerFinal = playerSecond;
+                }
+                else
+                {
+                    Console.WriteLine($"Your cards: {playerFinal}");
+                }
                 Status(playerCount, playerHand);
-                Console.WriteLine($"Your cards: {playerFinal}");
+
                 Console.WriteLine("1. Hit\n2. Double Down\n3. Stand");
                 int action = Convert.ToInt32(Console.ReadLine());
+
+                Console.Clear();
 
                 if (action == 1)
                 {
@@ -89,8 +101,15 @@ namespace CardGameBundle
                 }
             }
 
-            playerFinal = playerScore;
-
+            if (playerSecond <= 21 && playerSecond > playerScore)
+            {
+                playerFinal = playerSecond;
+            }
+            else
+            {
+                playerFinal = playerScore;
+            }
+           
             Console.Clear();
 
             stats = Score(dealerHand, dealerCount, dealerSecond, dealerAce, dealerScore); // Still bad
