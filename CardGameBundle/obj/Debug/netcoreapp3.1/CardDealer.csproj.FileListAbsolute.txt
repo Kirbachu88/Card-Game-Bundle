@@ -1,0 +1,13 @@
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\bin\Debug\netcoreapp3.1\CardDealer.exe
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\bin\Debug\netcoreapp3.1\CardDealer.deps.json
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\bin\Debug\netcoreapp3.1\CardDealer.runtimeconfig.json
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\bin\Debug\netcoreapp3.1\CardDealer.runtimeconfig.dev.json
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\bin\Debug\netcoreapp3.1\CardDealer.dll
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\bin\Debug\netcoreapp3.1\CardDealer.pdb
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\obj\Debug\netcoreapp3.1\CardDealer.csprojAssemblyReference.cache
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\obj\Debug\netcoreapp3.1\CardDealer.AssemblyInfoInputs.cache
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\obj\Debug\netcoreapp3.1\CardDealer.AssemblyInfo.cs
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\obj\Debug\netcoreapp3.1\CardDealer.csproj.CoreCompileInputs.cache
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\obj\Debug\netcoreapp3.1\CardDealer.dll
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\obj\Debug\netcoreapp3.1\CardDealer.pdb
+C:\Users\Kirbachu\source\repos\Blackjack\Blackjack\obj\Debug\netcoreapp3.1\CardDealer.genruntimeconfig.cache

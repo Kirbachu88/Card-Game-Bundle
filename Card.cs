@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace CardGames
+﻿namespace CardGameBundle
 {
     class Card
     {
-        // I don't know why these are here
+        // I guess I know why these are here
         private string face;
         private string suit;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardGames
+namespace CardGameBundle
 {
     class Deck // All 3 classes are in the same project/namespace, therefore know about each other already
     {
