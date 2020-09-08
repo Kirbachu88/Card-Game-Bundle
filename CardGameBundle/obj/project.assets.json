@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kirbachu\\source\\repos\\CardGameBundle\\CardGameBundle\\CardGameBundle.csproj",
+      "projectUniqueName": "C:\\Users\\Kirbachu\\Source\\Repos\\Card-Game-Bundle\\CardGameBundle\\CardGameBundle.csproj",
       "projectName": "CardGameBundle",
-      "projectPath": "C:\\Users\\Kirbachu\\source\\repos\\CardGameBundle\\CardGameBundle\\CardGameBundle.csproj",
+      "projectPath": "C:\\Users\\Kirbachu\\Source\\Repos\\Card-Game-Bundle\\CardGameBundle\\CardGameBundle.csproj",
       "packagesPath": "C:\\Users\\Kirbachu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kirbachu\\source\\repos\\CardGameBundle\\CardGameBundle\\obj\\",
+      "outputPath": "C:\\Users\\Kirbachu\\Source\\Repos\\Card-Game-Bundle\\CardGameBundle\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Kirbachu\\AppData\\Roaming\\NuGet\\NuGet.Config",

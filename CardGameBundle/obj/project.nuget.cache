@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eYKXWnDp+HV30xh7BCJZBCAsDweZO8HVyDE8zn8bAH+RX+/jL6mmNARX89sZXTvQDIfhzTO9j5CjM/z62Hvmpg==",
+  "dgSpecHash": "iBwvWoE5PHb3sIRxg5I/8JyhDKjCqRUHrSAxxfWeP7vHjqWPzYS+pvflUjE6vn4p6FQcKVZv6cL4wNt47JTmmg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Kirbachu\\source\\repos\\CardGameBundle\\CardGameBundle\\CardGameBundle.csproj",
+  "projectFilePath": "C:\\Users\\Kirbachu\\source\\repos\\Card-Game-Bundle\\CardGameBundle\\CardGameBundle.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,0 +1,13 @@
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\bin\Debug\netcoreapp3.1\CardGameBundle.exe
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\bin\Debug\netcoreapp3.1\CardGameBundle.deps.json
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\bin\Debug\netcoreapp3.1\CardGameBundle.runtimeconfig.json
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\bin\Debug\netcoreapp3.1\CardGameBundle.runtimeconfig.dev.json
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\bin\Debug\netcoreapp3.1\CardGameBundle.dll
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\bin\Debug\netcoreapp3.1\CardGameBundle.pdb
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\obj\Debug\netcoreapp3.1\CardGameBundle.csprojAssemblyReference.cache
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\obj\Debug\netcoreapp3.1\CardGameBundle.AssemblyInfoInputs.cache
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\obj\Debug\netcoreapp3.1\CardGameBundle.AssemblyInfo.cs
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\obj\Debug\netcoreapp3.1\CardGameBundle.csproj.CoreCompileInputs.cache
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\obj\Debug\netcoreapp3.1\CardGameBundle.dll
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\obj\Debug\netcoreapp3.1\CardGameBundle.pdb
+C:\Users\Kirbachu\source\repos\Card-Game-Bundle\CardGameBundle\obj\Debug\netcoreapp3.1\CardGameBundle.genruntimeconfig.cache
