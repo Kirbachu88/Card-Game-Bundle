@@ -22,7 +22,7 @@ namespace CardGameBundle
 
                 if (selection == 1)
                 {
-                    BlackJack.Start();
+                    Blackjack.Start();
                 }
                 else if (selection == 2)
                 {

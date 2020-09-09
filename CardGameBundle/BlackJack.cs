@@ -2,7 +2,7 @@
 
 namespace CardGameBundle
 {
-    class BlackJack
+    class Blackjack
     {
         public static void Start()
         {
@@ -16,292 +16,71 @@ namespace CardGameBundle
 
         static void NewRound(Deck newdeck, int roundWon = 0, int roundLost = 0)
         {
+            // USER VARIABLES
             string[] playerHand = new string[11];
+            int playerCount = 0;
+            int playerScore = 0;
+            int playerAce = 0;
+
+            // DEALER VARIABLES
             string[] dealerHand = new string[11];
-
-            const int MIN_COUNT = 2; // Starting cards
-            int playerCount = 0;     // Total player cards
-            int dealerCount = 0;     // Total dealer cards
-
-            int playerScore = 0;     // Player's current score
-            int playerSecond = 0;    // Score if Ace can be 11
-            bool playerAce = false;  // Display secondary score if Ace is in hand and <21
-
+            int dealerCount = 0;
             int dealerScore = 0;
-            int dealerSecond = 0;
-            bool dealerAce = false;
+            int dealerAce = 0;
+
+            // GAME CONDITIONS
             bool doubleDown = false;
-            bool stand = false;
+            bool cont = false;
 
             // Deal Starting Cards
-            for (int i = 0; i < MIN_COUNT; i++)
+            Hit(ref playerHand, ref playerCount, newdeck);
+            Hit(ref dealerHand, ref dealerCount, newdeck);
+
+            // Determine user's initial score
+            Score(out playerScore, out playerAce, playerHand);
+
+            while (!cont)
             {
-                playerHand[playerCount++] = DealCard(newdeck);
-                dealerHand[dealerCount++] = DealCard(newdeck);
-            }
-
-            int[] stats = Score(playerHand, playerCount, playerSecond, playerAce, playerScore); // This is bad
-
-            playerScore = stats[0];
-            playerSecond = stats[1];
-            playerAce = Convert.ToBoolean(stats[2]);
-
-            int playerFinal = playerScore;
-
-            while (playerFinal < 21 && !doubleDown && !stand)
-            {
-                // Ask if player wants more cards
-                if (playerAce)
-                {
-                    playerSecond = playerScore + 11;
-                    if (playerSecond == 21)
-                    {
-                        stand = true;
-                        playerFinal = playerSecond;
-                    }
-                    else if (playerSecond < 21)
-                    {
-                        Console.WriteLine($"Your cards: {playerScore} / {playerSecond}");
-                        playerFinal = playerSecond;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Your cards: {playerScore}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Your cards: {playerFinal}");
-                }
-                Status(playerCount, playerHand);
+                // PLAYER STATS TEST
+                Console.WriteLine($"Score: {playerScore} Count: {playerCount} Aces: {playerAce}");
+                Read(playerHand, playerCount);
 
                 Console.WriteLine("1. Hit\n2. Double Down\n3. Stand");
 
-                bool pause = true;
-                while (pause)
+                string action = Console.ReadLine();
+                switch (action)
                 {
-                    string action = Console.ReadLine();
-                    
-                    if (action == "1")
-                    {
+                    case "1":
                         playerHand[playerCount++] = DealCard(newdeck);
-                        stats = Score(playerHand, playerCount, playerSecond, playerAce, playerScore); // Definitely bad
-                        playerScore = stats[0];
-                        playerSecond = stats[1];
-                        playerAce = Convert.ToBoolean(stats[2]);
-                        playerFinal = playerScore;
-                        pause = false;
-                        Console.Clear();
-                    }
-                    else if (action == "2")
-                    {
+                        Score(out playerScore, out playerAce, playerHand, playerCount);
+                        break;
+                    case "2":
+                        playerHand[playerCount++] = DealCard(newdeck);
+                        Score(out playerScore, out playerAce, playerHand, playerCount);
                         doubleDown = true;
-                        {
-                            playerHand[playerCount++] = DealCard(newdeck);
-                            stats = Score(playerHand, playerCount, playerSecond, playerAce, playerScore);
-                            playerScore = stats[0];
-                            playerSecond = stats[1];
-                            playerAce = Convert.ToBoolean(stats[2]);
-                            playerFinal = playerScore;
-                            pause = false;
-                            Console.Clear();
-                        }
-                    }
-                    else if (action == "3")
-                    {
-                        stand = true;
-                        pause = false;
-                        Console.Clear();
-                    }
-                    else
-                    {
+                        cont = true;
+                        break;
+                    case "3":
+                        cont = true;
+                        break;
+                    default:
                         Console.WriteLine("Please enter a number from 1-3.");
-                    }
+                        break;
                 }
-
+                Console.Clear();
             }
 
-            if (playerSecond <= 21 && playerSecond > playerScore)
-            {
-                playerFinal = playerSecond;
-            }
-            else
-            {
-                playerFinal = playerScore;
-            }
-           
-            Console.Clear();
+            // PLAYER STATS TEST
+            Console.WriteLine($"Score: {playerScore} Count: {playerCount} Aces: {playerAce}");
+            Read(playerHand, playerCount);
 
-            stats = Score(dealerHand, dealerCount, dealerSecond, dealerAce, dealerScore); // Still bad
-            dealerScore = stats[0];
-            dealerSecond = stats[1];
-            dealerAce = Convert.ToBoolean(stats[2]);
+            // Determine dealer's score
+            Score(out dealerScore, out dealerAce, dealerHand);
 
-            int dealerFinal = dealerScore;
+            // DETERMINE WINNER AND DOUBLE DOWN STATUS
 
-            if (EndRound(playerFinal, playerCount, playerHand, dealerFinal, dealerCount, dealerHand))
-            {
-                roundWon++;
-                if (doubleDown)
-                {
-                    roundWon++;
-                }
-            }
-            else
-            {
-                roundLost++;
-                if (doubleDown)
-                {
-                    roundLost++;
-                }
-            }
-
-            Console.WriteLine($"{roundWon} Won\n{roundLost} Lost");
-
-            Replay(roundWon, roundLost, newdeck);
-        }
-
-        static int[] Score(string[] playerHand, int playerCount, int playerSecond, bool playerAce, int playerScore) // Calculate current score
-        {
-            // Scoring Cards
-            int[] stats = Comb(playerHand, playerCount, playerScore, playerSecond);
-            playerScore = stats[0];
-            playerSecond = stats[1];
-            playerAce = Convert.ToBoolean(stats[2]);
-
-            // Determine whether Ace = 1 or 11
-            int playerFinal = playerScore;
-
-            if (playerScore < playerSecond && playerSecond <= 21)
-            {
-                playerFinal = playerSecond;
-            }
-            return stats;
-        }
-
-        static int[] Comb(string[] playerHand, int playerCount, int playerScore, int playerSecond) // Retrieve card values
-        {
-            playerScore = 0;
-            bool playerAce = false;
-            int[] stats = new int[3];
-            for (int i = 0; i < playerCount; i++)
-            {
-                string currentCard = playerHand[i];
-
-                if (currentCard.Contains("Ace"))
-                {
-                    if (playerScore + 11 <= 21)
-                    {
-                        playerAce = true;
-                        playerSecond = playerScore + 11;
-                        playerScore++;
-                    }
-                    else
-                    {
-                        playerAce = false;
-                        playerScore++;
-                    }
-                }
-                else // I just don't know what is even life
-                {
-                    switch (playerHand[i])
-                    {
-                        case string a when a.Contains("Two"):
-                            playerScore += 2;
-                            break;
-                        case string a when a.Contains("Three"):
-                            playerScore += 3;
-                            break;
-                        case string a when a.Contains("Four"):
-                            playerScore += 4;
-                            break;
-                        case string a when a.Contains("Five"):
-                            playerScore += 5;
-                            break;
-                        case string a when a.Contains("Six"):
-                            playerScore += 6;
-                            break;
-                        case string a when a.Contains("Seven"):
-                            playerScore += 7;
-                            break;
-                        case string a when a.Contains("Eight"):
-                            playerScore += 8;
-                            break;
-                        case string a when a.Contains("Nine"):
-                            playerScore += 9;
-                            break;
-                        default: // Default case for face cards and 10
-                            playerScore += 10;
-                            break;
-                    } // I need a hug
-                }
-
-            }
-
-            if (playerSecond > 21)
-            {
-                playerAce = false;
-            }
-
-            stats[0] = playerScore;
-            stats[1] = playerSecond;
-            stats[2] = Convert.ToInt32(playerAce);
-            return stats;
-        }
-
-        static void Status(int playerCount, string[] playerHand) // Display Player's Current Hand
-        {
-            for (int i = 0; i < playerCount; i++)
-            {
-                Console.WriteLine(playerHand[i]);
-            }
-            Console.WriteLine();
-        }
-
-        static bool EndRound(int playerFinal, int playerCount, string[] playerHand, int dealerFinal, int dealerCount, string[]dealerHand) // End round and determine outcome
-        {
-            bool roundWon = false;
-            // PLAYER RESULTS
-            Console.WriteLine($"Your cards: {playerFinal}");
-            for (int i = 0; i < playerCount; i++)
-            {
-                Console.WriteLine(playerHand[i]);
-            }
-            Console.WriteLine();
-
-            // DEALER RESULTS
-            Console.WriteLine($"Dealer's cards: {dealerFinal}");
-            for (int i = 0; i < dealerCount; i++)
-            {
-                Console.WriteLine(dealerHand[i]);
-            }
-            Console.WriteLine();
-
-            // Game Result
-            if (playerFinal > dealerFinal && playerFinal <= 21)
-            {
-                Console.WriteLine("You won!");
-                roundWon = true;
-            }
-            else if (playerFinal < 21 && dealerFinal > 21)
-            {
-                Console.WriteLine("You won!");
-                roundWon = true;
-            }
-            else /*if (dealerFinal <= 21)*/
-            {
-                //if (playerFinal > 21 || playerFinal < dealerFinal)
-                //{
-                Console.WriteLine("You lose...");
-                roundWon = false;
-                //}
-            }
-            return roundWon;
-        }
-
-        static void Replay(int roundWon, int roundLost, Deck newdeck)
-        {
-            Console.WriteLine("\nType \"QUIT\" to exit game: ");
+            // Ask if user wants to play again
+            Console.WriteLine("Type \"QUIT\" to exit game: ");
             if (Console.ReadLine().ToUpper() == "QUIT")
             {
 
@@ -312,35 +91,81 @@ namespace CardGameBundle
                 NewRound(newdeck, roundWon, roundLost);
             }
         }
-
-        static string DealCard(Deck newdeck) // Deal Cards to selected player
+        static void Hit(ref string[] Hand, ref int Count, Deck newdeck, int number = 2)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                Hand[Count++] = DealCard(newdeck);
+            }
+            
+        }                       // Add card(s) to a player's hand
+        static void Read(string[] playerHand, int playerCount)
+        {
+            for (int i = 0; i < playerCount; i++)
+            {
+                Console.WriteLine(playerHand[i]);
+            }
+        }                                            // List off cards
+        static void Score(out int playerScore, out int playerAce, string[] playerHand, int playerCount= 2)
+        {
+            playerScore = 0;
+            playerAce = 0;
+            for (int i = 0; i < playerCount; i++)
+            {
+                string currentCard = playerHand[i];
+                switch (playerHand[i])
+                {
+                case string a when a.Contains("Ace"):
+                        playerAce++; // Just calculate this outside of here
+                        break;
+                case string a when a.Contains("Two"):
+                        playerScore += 2;
+                        break;
+                case string a when a.Contains("Three"):
+                        playerScore += 3;
+                        break;
+                case string a when a.Contains("Four"):
+                        playerScore += 4;
+                        break;
+                case string a when a.Contains("Five"):
+                        playerScore += 5;
+                        break;
+                case string a when a.Contains("Six"):
+                        playerScore += 6;
+                        break;
+                case string a when a.Contains("Seven"):
+                        playerScore += 7;
+                        break;
+                case string a when a.Contains("Eight"):
+                        playerScore += 8;
+                        break;
+                case string a when a.Contains("Nine"):
+                        playerScore += 9;
+                        break;
+                default: // 10 and Face Cards
+                        playerScore += 10;
+                        break;
+                } // I still need a hug
+            }
+        }   // Retrieve card values
+        static int Final(int playerScore, int playerAce)
+        {
+            switch (playerAce)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                default:
+                    break;
+            }
+            return playerScore;
+        }
+        static string DealCard(Deck newdeck)
         {
             string newCard;
             newCard = Convert.ToString(newdeck.DealCard());
             return newCard;
         }
-
-        // Get Player and Dealer score
-        //Console.WriteLine("Round results: ");
-        //if (playerAce && playerSecond <= 21)
-        //{
-        //    Console.WriteLine($"{playerScore} / {playerSecond}");
-        //}
-        //else
-        //{
-        //    Console.WriteLine(playerScore);
-        //}
-        //if (dealerAce && dealerSecond <= 21)
-        //{
-        //    Console.WriteLine($"{dealerScore} / {dealerSecond}");
-        //}
-        //else
-        //{
-        //    Console.WriteLine(dealerScore);
-        //}
-
-        // Check to see if we can keep track of # of cards
-        //Console.WriteLine($"Player Cards: {playerCount}\nDealer Cards: {dealerCount}");
-
     }
 }
