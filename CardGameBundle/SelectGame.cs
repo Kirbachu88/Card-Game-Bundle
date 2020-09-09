@@ -8,8 +8,6 @@ namespace CardGameBundle
         static void Main(string[] args)
         {
             GameSelect();
-
-            Console.ReadLine();
         }
 
         // Select game from list
