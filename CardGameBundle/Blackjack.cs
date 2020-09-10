@@ -37,8 +37,8 @@ namespace CardGameBundle
             Hit(ref dealerHand, ref dealerCount, newdeck);
 
             // GET USER SCORE
-            Comb(out playerScore, out playerAce, playerHand);
-            Ace(playerScore, playerAce);
+            Comb(out playerScore, out playerAce, playerHand, playerCount);
+            playerScore = Ace(playerScore, playerAce);
 
             // Immediately end user turn when win/lose condition is met
             if (playerScore >= 21)
@@ -49,51 +49,67 @@ namespace CardGameBundle
             // PLAYER'S TURN
             while (!stand)
             {
+                Comb(out playerScore, out playerAce, playerHand, playerCount);
                 Console.WriteLine($"Your cards: {playerScore = Ace(playerScore, playerAce)}");
                 Read(playerHand, playerCount);
-                Console.WriteLine("1. Hit\n2. Double Down\n3. Stand");
-
-                string action = Console.ReadLine();
-                switch (action)
-                {
-                    case "1":
-                        playerHand[playerCount++] = DealCard(newdeck);
-                        Console.Clear();
-                        break;
-                    case "2":
-                        playerHand[playerCount++] = DealCard(newdeck);
-                        doubleDown = true;
-                        stand = true;
-                        Console.Clear();
-                        break;
-                    case "3":
-                        stand = true;
-                        Console.Clear();
-                        break;
-                    default:
-                        Console.WriteLine("Please enter a number from 1-3.");
-                        break;
-                }
-
-                Comb(out playerScore, out playerAce, playerHand, playerCount);
-                Ace(playerScore, playerAce);
-
-                // Immediately end user turn when win/lose condition is met
                 if (playerScore >= 21)
                 {
                     stand = true;
+                    Console.Clear();
+                }
+                if (!stand)
+                {
+                    Console.WriteLine("\n1. Hit\n2. Double Down\n3. Stand");
+
+                    string action = Console.ReadLine();
+                    switch (action)
+                    {
+                        case "1":
+                            playerHand[playerCount++] = DealCard(newdeck);
+                            Console.Clear();
+                            break;
+                        case "2":
+                            playerHand[playerCount++] = DealCard(newdeck);
+                            doubleDown = true;
+                            stand = true;
+                            Console.Clear();
+                            break;
+                        case "3":
+                            stand = true;
+                            Console.Clear();
+                            break;
+                        default:
+                            Console.WriteLine("Please enter a number from 1-3.");
+                            break;
+                    }
+
+                    Comb(out playerScore, out playerAce, playerHand, playerCount);
+                    Ace(playerScore, playerAce);
+
+                    // Immediately end user turn when win/lose condition is met
+                    if (playerScore >= 21)
+                    {
+                        stand = true;
+                    }
                 }
             }
+
+            // LIST USER'S SCORE
+            Comb(out playerScore, out playerAce, playerHand, playerCount);
+            Console.WriteLine($"Your cards: {playerScore = Ace(playerScore, playerAce)}");
+            Read(playerHand, playerCount);
+
+            Console.WriteLine();
 
             // DEALER'S TURN
             bool dealerTurn = true;
 
             Comb(out dealerScore, out dealerAce, dealerHand, dealerCount);
-            Ace(dealerScore, dealerAce);
+            dealerScore = Ace(dealerScore, dealerAce);
 
             while (dealerTurn)
             {
-                if (dealerScore < 17 && dealerScore < playerScore)
+                if ((dealerScore < 17) && (dealerScore < playerScore) && (playerScore <= 21))
                 {
                     dealerHand[dealerCount++] = DealCard(newdeck);
                 }
@@ -102,19 +118,15 @@ namespace CardGameBundle
                     dealerTurn = false;
                 }
                 Comb(out dealerScore, out dealerAce, dealerHand, dealerCount);
-                Ace(dealerScore, dealerAce);
-            }
-            // END DEALER'S TURN
+                dealerScore = Ace(dealerScore, dealerAce);
+            } // END OF DEALER'S TURN
 
-
-
-            // LIST FINAL SCORES
-            Console.WriteLine($"Your cards: {playerScore = Ace(playerScore, playerAce)}");
-            Read(playerHand, playerCount);
-
+            // LIST DEALER'S SCORE
+            Comb(out dealerScore, out dealerAce, dealerHand, dealerCount);
             Console.WriteLine($"Dealer's cards: {dealerScore = Ace(dealerScore, dealerAce)}");
             Read(dealerHand, dealerCount);
 
+            Console.WriteLine();
 
 
             // DETERMINE WINNER AND DOUBLE DOWN STATUS
@@ -129,7 +141,7 @@ namespace CardGameBundle
                 Console.WriteLine("You won!");
             }
 
-            Console.WriteLine($"{roundWon} Wins\n{roundLost} Losses");
+            Console.WriteLine($"{roundWon} Wins\n{roundLost} Losses\n");
 
 
 
@@ -145,14 +157,14 @@ namespace CardGameBundle
                 NewRound(newdeck, roundWon, roundLost);
             }
         }
-        static void Hit(ref string[] Hand, ref int Count, Deck newdeck, int number = 2)
+        static void Hit(ref string[] Hand, ref int Count, Deck newdeck)
         {
-            for (int i = 0; i < number; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Hand[Count++] = DealCard(newdeck);
             }
             
-        }                   // Add card(s) to a player's hand
+        }                                   // Add card(s) to a player's hand
         static void Read(string[] playerHand, int playerCount)
         {
             for (int i = 0; i < playerCount; i++)
@@ -160,7 +172,7 @@ namespace CardGameBundle
                 Console.WriteLine(playerHand[i]);
             }
         }                                            // List off cards
-        static void Comb(out int playerScore, out int playerAce, string[] playerHand, int playerCount= 2)
+        static void Comb(out int playerScore, out int playerAce, string[] playerHand, int playerCount)
         {
             playerScore = 0;
             playerAce = 0;
@@ -201,22 +213,26 @@ namespace CardGameBundle
                         break;
                 } // I still need a hug
             }
-        } // Retrieve card values
-        static int Ace(int playerScore, int playerAce)                                                       // TODO: Determine if Aces should equal 1 or 11
+        }    // Retrieve card values
+        static int Ace(int playerScore, int playerAce)
         {
-            if (playerAce > 0)
+            if (playerAce > 0)                // Definitely 1-4 Aces
             {
-                if (playerScore + playerAce > 17)
+                if (playerScore >= 11)        // Definitely equals 1
                 {
                     playerScore += playerAce;
-                }
-                else
+                } 
+                else                          // Maybe equals 11?
                 {
-                    
+                    playerScore += 11;
+                    if (playerAce - 1 > 0)
+                    {
+                        playerScore += playerAce;
+                    }
                 }
             }
             return playerScore;
-        }
+        }                                                    // Calculate Aces
         static int WinLose(int aRound, bool doubleDown)
         {
             if (doubleDown)
@@ -224,7 +240,7 @@ namespace CardGameBundle
                 ++aRound;
             }
             return ++aRound;
-        }
+        }                                                   // Increment Win/Loss count
         static string DealCard(Deck newdeck)
         {
             string newCard;
