@@ -14,6 +14,7 @@ namespace CardGameBundle
             Deck newdeck = new Deck();
             newdeck.Shuffle();
 
+            Console.ReadLine();
         }
     }
 }

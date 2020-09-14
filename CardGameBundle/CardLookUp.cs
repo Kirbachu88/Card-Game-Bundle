@@ -17,6 +17,8 @@ namespace CardGameBundle
                 }
 
             }
+
+            Console.ReadLine();
         }
 
     }
